@@ -2,8 +2,6 @@
 
 A simple and efficient task management web application built with the Play Framework and Scala. This application allows users to create boards, organize tasks into lists, and track progress across different stages of work.
 
-![Scala Task Management](/public/images/screenshot.png)
-
 ## Features
 
 - **User Authentication:** Secure login and registration system
