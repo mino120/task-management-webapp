@@ -1,0 +1,116 @@
+@(board: models.Board, lists: Seq[models.List], tasksByList: Map[Long, Seq[models.Task]])(implicit request: RequestHeader)
+
+@main(s"${board.name}") {
+  <div class="container-fluid mt-4">
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="display-5">@board.name</h1>
+        @if(board.description.isDefined && board.description.get.nonEmpty) {
+          <p class="lead">@board.description</p>
+        }
+      </div>
+      <div class="col-auto">
+        <a href="@routes.BoardController.listAll(1)" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left"></i> Back to Boards
+        </a>
+        <button class="btn btn-primary" id="addListBtn">
+          <i class="bi bi-plus"></i> Add List
+        </button>
+      </div>
+    </div>
+
+    @if(request.flash.get("success").isDefined) {
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @request.flash.get("success")
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    }
+
+    <div class="row">
+      @for(list <- lists) {
+        <div class="col-md-4 mb-4">
+          <div class="card board-list h-100">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">@list.name</h5>
+            </div>
+            <div class="card-body">
+              <!-- Tasks in this list -->
+              <div class="tasks-container mb-3">
+                @for(task <- tasksByList.getOrElse(list.id.getOrElse(0L), Seq.empty)) {
+                  <div class="card task-card mb-2">
+                    <div class="card-body py-2 px-3">
+                      <h6 class="card-title mb-1">@task.title</h6>
+                      @if(task.description.isDefined && task.description.get.nonEmpty) {
+                        <p class="card-text small text-muted mb-0">@task.description</p>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+              
+              <!-- Add task button and form -->
+              <button class="btn btn-sm btn-outline-primary w-100" 
+                      onclick="toggleAddTaskForm('@list.id.getOrElse(0)')">
+                <i class="bi bi-plus"></i> Add Task
+              </button>
+              
+              <div id="task-form-@list.id.getOrElse(0)" class="add-task-form mt-3" style="display: none;">
+                <form action="@routes.TaskController.createTask()" method="POST">
+                  <input type="hidden" name="listId" value="@list.id.getOrElse(0)">
+                  
+                  <div class="form-group mb-2">
+                    <input type="text" class="form-control form-control-sm" 
+                           name="title" placeholder="Task title" required>
+                  </div>
+                  
+                  <div class="form-group mb-2">
+                    <textarea class="form-control form-control-sm" name="description" 
+                              placeholder="Description (optional)" rows="2"></textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                    <button type="button" class="btn btn-sm btn-light" 
+                            onclick="toggleAddTaskForm('@list.id.getOrElse(0)')">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+  
+  <script>
+    function toggleAddTaskForm(listId) {
+      const formElement = document.getElementById(`task-form-${listId}`);
+      if (formElement.style.display === 'none') {
+        formElement.style.display = 'block';
+      } else {
+        formElement.style.display = 'none';
+      }
+    }
+  </script>
+  
+  <style>
+    .board-list {
+      border: 1px solid rgba(0,0,0,.125);
+      border-radius: 0.25rem;
+    }
+    
+    .tasks-container {
+      min-height: 10px;
+    }
+    
+    .task-card {
+      cursor: pointer;
+      transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .task-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+}

@@ -1,0 +1,39 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.HomeController.index()
+
+# Board routes - Fixed order to prevent conflicts
+GET     /boards/new                 controllers.BoardController.showCreateForm()
+GET     /boards                     controllers.BoardController.listAll(userId: Long ?= 1)
+GET     /boards/:id                 controllers.HomeController.board(id: Long)
+POST    /boards/create              controllers.BoardController.createBoard()
+
+# Task routes
+POST    /tasks/create               controllers.TaskController.createTask()
+
+# API routes for boards
+GET     /api/boards                 controllers.BoardController.list(userId: Long ?= 1)
+GET     /api/boards/:id             controllers.BoardController.get(id: Long)
+POST    /api/boards                 controllers.BoardController.create()
+PUT     /api/boards/:id             controllers.BoardController.update(id: Long)
+DELETE  /api/boards/:id             controllers.BoardController.delete(id: Long)
+
+# API routes for lists
+GET     /api/boards/:boardId/lists  controllers.ListController.listByBoard(boardId: Long)
+GET     /api/lists/:id              controllers.ListController.get(id: Long)
+POST    /api/lists                  controllers.ListController.create()
+PUT     /api/lists/:id              controllers.ListController.update(id: Long)
+DELETE  /api/lists/:id              controllers.ListController.delete(id: Long)
+
+# API routes for tasks
+GET     /api/lists/:listId/tasks    controllers.TaskController.listByList(listId: Long)
+GET     /api/tasks/:id              controllers.TaskController.get(id: Long)
+POST    /api/tasks                  controllers.TaskController.create()
+PUT     /api/tasks/:id              controllers.TaskController.update(id: Long)
+DELETE  /api/tasks/:id              controllers.TaskController.delete(id: Long)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

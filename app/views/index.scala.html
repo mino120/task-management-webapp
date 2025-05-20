@@ -1,0 +1,181 @@
+@()(implicit request: play.api.mvc.Request[AnyContent])
+
+@main("Scala Task Management") {
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+          <a class="navbar-brand" href="@routes.HomeController.index()">
+            <i class="bi bi-kanban me-2"></i>Scala Task Management
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link active" href="@routes.HomeController.index()">
+                  <i class="bi bi-house-door me-1"></i> Home
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="@routes.BoardController.listAll(1)">
+                  <i class="bi bi-kanban me-1"></i> My Boards
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="@routes.BoardController.showCreateForm()">
+                  <i class="bi bi-plus-circle me-1"></i> New Board
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    
+      <div class="container">
+        @if(request.flash.get("success").isDefined) {
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @request.flash.get("success")
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        }
+  <!-- Hero section with animated content -->
+  <div class="hero-container">
+    <div class="hero-content animate-fade-in">
+      <h1 class="hero-title animate-slide-down">Welcome to Scala Task Management</h1>
+      <p class="hero-subtitle animate-slide-down" style="animation-delay: 0.2s;">A simple and efficient way to organize your tasks and projects.</p>
+      
+      <div class="hero-buttons animate-fade-in" style="animation-delay: 0.5s;">
+        <a class="btn btn-light btn-lg btn-glow me-3" href="@routes.BoardController.listAll(1)">
+          <i class="bi bi-kanban me-2"></i>My Boards
+        </a>
+        <a class="btn btn-success btn-lg btn-glow" href="@routes.BoardController.showCreateForm()">
+          <i class="bi bi-plus-lg me-2"></i>Create New Board
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Flash messages -->
+  @if(request.flash.get("success").isDefined) {
+    <div class="container mt-4">
+      <div class="alert alert-success alert-dismissible fade show animate-fade-in" role="alert">
+        @request.flash.get("success")
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  }
+
+  <!-- Feature Cards Section -->
+  <div class="container features-section">
+    <div class="section-title text-center animate-fade-in">
+      <h2>Simplify Your Workflow</h2>
+      <p class="text-muted">Manage tasks, track progress, and collaborate with your team</p>
+    </div>
+    
+    <div class="row g-4 mt-4">
+      <div class="col-md-4">
+        <a href="@routes.BoardController.showCreateForm()" class="text-decoration-none">
+          <div class="card feature-card h-100 animate-slide-up" style="animation-delay: 0.1s;">
+            <div class="card-body p-4">
+              <div class="feature-icon">
+                <i class="bi bi-list-check"></i>
+              </div>
+              <h3 class="card-title">Organize Tasks</h3>
+              <p class="card-text">Create boards, lists, and cards to organize your work efficiently.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-md-4">
+        <a href="@routes.BoardController.listAll(1)" class="text-decoration-none">
+          <div class="card feature-card h-100 animate-slide-up" style="animation-delay: 0.3s;">
+            <div class="card-body p-4">
+              <div class="feature-icon">
+                <i class="bi bi-graph-up"></i>
+              </div>
+              <h3 class="card-title">Track Progress</h3>
+              <p class="card-text">Move cards between lists to track your progress and stay on top of your work.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-md-4">
+        <a href="#" onclick="alert('Collaboration features coming soon!');" class="text-decoration-none">
+          <div class="card feature-card h-100 animate-slide-up" style="animation-delay: 0.5s;">
+            <div class="card-body p-4">
+              <div class="feature-icon">
+                <i class="bi bi-people"></i>
+              </div>
+              <h3 class="card-title">Collaborate</h3>
+              <p class="card-text">Share your boards with others to collaborate on projects together.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- How It Works Section -->
+  <div class="container-fluid how-it-works-section mt-5 py-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 animate-slide-right">
+          <h2>How It Works</h2>
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h4>Create your board</h4>
+              <p>Start by creating a new board for your project or workflow</p>
+            </div>
+          </div>
+          
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h4>Add tasks and organize</h4>
+              <p>Create tasks and organize them into different lists</p>
+            </div>
+          </div>
+          
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h4>Track progress</h4>
+              <p>Move tasks between lists as you make progress</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-6 text-center animate-slide-left">
+            <img src="@routes.Assets.versioned("images/task-management-illustration.svg.webp")" 
+                 alt="Task Management Illustration" class="img-fluid illustration-img">
+            <!-- Add your SVG to public/images/ -->
+          </div>          
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="cta-section text-center animate-fade-in">
+    <div class="container">
+      <h2>Ready to get started?</h2>
+      <p class="mb-4">Join thousands of users who organize their work with Scala Task Management</p>
+      <a href="@routes.BoardController.showCreateForm()" class="btn btn-lg btn-success btn-glow">
+        Create Your First Board
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer py-4">
+    <div class="container text-center">
+      <p class="mb-0">Scala Task Management System © 2025</p>
+    </div>
+  </footer>
+
+  <!-- Add Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons1.11.1/font/bootstrap-icons.css">
+}

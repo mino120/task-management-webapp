@@ -1,0 +1,59 @@
+@(boards: Seq[models.Board])(implicit request: play.api.mvc.RequestHeader)
+
+@main("My Boards") {
+  <div class="container mt-4">
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="display-5">My Boards</h1>
+      </div>
+      <div class="col-auto">
+        <a href="@routes.BoardController.showCreateForm()" class="btn btn-primary">
+          <i class="bi bi-plus"></i> Create New Board
+        </a>
+      </div>
+    </div>
+
+    @if(request.flash.get("success").isDefined) {
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @request.flash.get("success")
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    }
+
+    <div class="row">
+      @if(boards.isEmpty) {
+        <div class="col-12">
+          <div class="alert alert-info">
+            You don't have any boards yet. <a href="@routes.BoardController.showCreateForm()">Create your first board</a>.
+          </div>
+        </div>
+      } else {
+        @for(board <- boards) {
+          <div class="col-md-4 mb-4">
+            <div class="card board-card h-100">
+              <div class="card-body">
+                <h5 class="card-title">@board.name</h5>
+                @if(board.description.isDefined && board.description.get.nonEmpty) {
+                  <p class="card-text">@board.description</p>
+                }
+                <a href="@routes.HomeController.board(board.id.getOrElse(0))" class="btn btn-outline-primary stretched-link">
+                  Open Board
+                </a>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <style>
+    .board-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .board-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+  </style>
+}
